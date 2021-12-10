@@ -1,6 +1,8 @@
 % Inverse Kinematics Test
 rosshutdown;
-ur5 = ur5_interface();
+if exist('ur5','var')==0
+    ur5 = ur5_interface();
+end
 joint_offset = [-pi/2 -pi/2 0 -pi/2 0 0]';
 joints = [0 0 0 0 0 0]';
 g_S_T = ur5FwdKin(joints- joint_offset);
