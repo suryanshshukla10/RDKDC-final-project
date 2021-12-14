@@ -5,46 +5,8 @@ function gst = ur5FwdKin(q)
 %Output - gst: end effector pose, gst (4x4 matrix) 
 
 % Parse input
-theta1 = q(1); theta2 = q(2); theta3 = q(3); 
-theta4 = q(4); theta5 = q(5); theta6 = q(6); 
-
-% % % % % % % Defining the input for DH parameters % % % % % % % 
-d1 = 0.089159;
-d2 = 0;
-d3 = 0;
-d4 = 0.10915;
-d5 = 0.09465;
-d6 = 0.0823;
-a1 = 0;
-a2 = -0.425;
-a3 = -0.39225;
-a4 = 0;
-a5 = 0;
-a6 = 0;
-alpha1 = pi/2;
-alpha2 = 0;
-alpha3 = 0;
-alpha4 = pi/2;
-alpha5 = -pi/2;
-alpha6 = 0;
-
-% For Reference:
-% gRest = [-1, 0, 0, a2+a3;
-%           0, 0, 1,-d4-d6;
-%           0, 1, 0, d1-d5;
-%           0, 0, 0, 1];
-% RViz environment has different sign convention, need to flip values
-d4=-d4;d6=-d6; % Flipping y axis 
-a2=-a2;a3=-a3; % Flipping x axis
-
-% ALPHAS NOT FIXED YET
-alpha1 = pi/2;
-alpha2 = 0;
-alpha3 = 0;
-alpha4 = pi/2;
-alpha5 = -pi/2;
-alpha6 = 0;
-
+theta1 = q(1)+pi/2; theta2 = q(2)-pi/2; theta3 = q(3); 
+theta4 = q(4)-pi/2; theta5 = q(5); theta6 = q(6); 
 
 % DH parameters
     d1 = 0.0892;
@@ -65,7 +27,6 @@ alpha6 = 0;
     alpha4 = pi/2;
     alpha5 = -pi/2;
     alpha6 = 0;
-
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
 g01 = DH_para(a1, alpha1, d1, theta1);
