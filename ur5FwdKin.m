@@ -1,5 +1,5 @@
 function gst = ur5FwdKin(q)
-% Forward Kinematics - Suryansh Shukla
+% Forward Kinematics 
 % Purpose - Compute forward kinematics map of UR5
 %Input - q - 6x1 joint space variable vector = [θ1; θ2; θ3; θ4; θ5; θ6]T
 %Output - gst: end effector pose, gst (4x4 matrix) 
@@ -9,24 +9,24 @@ theta1 = q(1)+pi/2; theta2 = q(2)-pi/2; theta3 = q(3);
 theta4 = q(4)-pi/2; theta5 = q(5); theta6 = q(6); 
 
 % DH parameters
-    d1 = 0.0892;
-    d2 = 0;
-    d3 = 0;
-    d4 = 0.1093;
-    d5 = 0.09475;
-    d6 = 0.0825;
-    a1 = 0;
-    a2 = -0.425;
-    a3 = -0.392;
-    a4 = 0;
-    a5 = 0;
-    a6 = 0;
-    alpha1 = pi/2;
-    alpha2 = 0;
-    alpha3 = 0;
-    alpha4 = pi/2;
-    alpha5 = -pi/2;
-    alpha6 = 0;
+d1 = 0.0892;
+d2 = 0;
+d3 = 0;
+d4 = 0.1093;
+d5 = 0.09475;
+d6 = 0.0825;
+a1 = 0;
+a2 = -0.425;
+a3 = -0.392;
+a4 = 0;
+a5 = 0;
+a6 = 0;
+alpha1 = pi/2;
+alpha2 = 0;
+alpha3 = 0;
+alpha4 = pi/2;
+alpha5 = -pi/2;
+alpha6 = 0;
 
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
 g01 = DH_para(a1, alpha1, d1, theta1);
