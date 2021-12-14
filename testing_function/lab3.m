@@ -38,19 +38,22 @@ disp(g-g_rviz); % Compare
 % Real Params
 q = [pi/4 pi/3 pi/6 pi/5 pi/2 pi/3]'; % Joint Vector
 J = JacobianBody(q);
-gst = ur5fwdtwist(q);
+% gst = ur5fwdtwist(q);
+gst = ur5FwdKin(q);
 
 % Simulated Error Params
 epsilon = 0.1;
-offsets = identity*epsilon;
+offsets = eye(6)*epsilon;
 Japprox = zeros(6);
 
 for i= 1:6
     off = offsets(:,i);
     q_high = q+off;
     q_low = q-off;
-    gst_high = ur5fwdtwist(q_high);
-    gst_low = ur5fwdtwist(q_low);
+%     gst_high = ur5fwdtwist(q_high);
+%     gst_low = ur5fwdtwist(q_low);
+    gst_high = ur5FwdKin(q_high);
+    gst_low = ur5FwdKin(q_low);
     delta = 0.5/epsilon*(gst_high-gst_low);
     
     twist_approx = getXi(inv(gst)*delta); %#ok<*MINV> % Extracts 6x1 vector
