@@ -6,9 +6,17 @@ function Jb = JacobianBody(q)
 % Output - 
 % Jb - 6x6 body jacobian matrix
 
-% Parse input
-theta1 = q(1)+pi/2; theta2 = q(2)-pi/2; theta3 = q(3); 
-theta4 = q(4)-pi/2; theta5 = q(5); theta6 = q(6); 
+% nothing
+theta1 = q(1); theta2 = q(2); theta3 = q(3); 
+theta4 = q(4); theta5 = q(5); theta6 = q(6); 
+
+% % original xacro home
+% theta1 = q(1)+pi; theta2 = q(2); theta3 = q(3); 
+% theta4 = q(4); theta5 = q(5); theta6 = q(6); 
+
+% %ryan keating home
+% theta1 = q(1)+pi/2; theta2 = q(2)-pi/2; theta3 = q(3); 
+% theta4 = q(4)-pi/2; theta5 = q(5); theta6 = q(6); 
 
 % DH parameters
 d1 = 0.0892;
@@ -75,12 +83,12 @@ g34 = DH_para(a4, alpha4, d4, theta4);
 g45 = DH_para(a5, alpha5, d5, theta5);
 g56 = DH_para(a6, alpha6, d6, theta6);
 
-j1 = Adjoint((g01))*twist1;
-j2 = Adjoint((g12*g01))*twist2;
-j3 = Adjoint((g23*g12*g01))*twist3;
-j4 = Adjoint((g34*g23*g12*g01))*twist4;
-j5 = Adjoint((g45*g34*g23*g12*g01))*twist5;
-j6 = Adjoint((g56*g45*g34*g23*g12*g01))*twist6;
+j1 = Adjoint(inv(g01))*twist1;
+j2 = Adjoint(inv(g12*g01))*twist2;
+j3 = Adjoint(inv(g23*g12*g01))*twist3;
+j4 = Adjoint(inv(g34*g23*g12*g01))*twist4;
+j5 = Adjoint(inv(g45*g34*g23*g12*g01))*twist5;
+j6 = Adjoint(inv(g56*g45*g34*g23*g12*g01))*twist6;
 
 Jb = [j1,j2,j3,j4,j5,j6];
 
