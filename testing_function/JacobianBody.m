@@ -75,12 +75,12 @@ g34 = DH_para(a4, alpha4, d4, theta4);
 g45 = DH_para(a5, alpha5, d5, theta5);
 g56 = DH_para(a6, alpha6, d6, theta6);
 
-j1 = Adjoint(g01)*twist1;
-j2 = Adjoint(g12*g01)*twist2;
-j3 = Adjoint(g23*g12*g01)*twist3;
-j4 = Adjoint(g34*g23*g12*g01)*twist4;
-j5 = Adjoint(g45*g34*g23*g12*g01)*twist5;
-j6 = Adjoint(g56*g45*g34*g23*g12*g01)*twist6;
+j1 = Adjoint((g01))*twist1;
+j2 = Adjoint((g12*g01))*twist2;
+j3 = Adjoint((g23*g12*g01))*twist3;
+j4 = Adjoint((g34*g23*g12*g01))*twist4;
+j5 = Adjoint((g45*g34*g23*g12*g01))*twist5;
+j6 = Adjoint((g56*g45*g34*g23*g12*g01))*twist6;
 
 Jb = [j1,j2,j3,j4,j5,j6];
 
