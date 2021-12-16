@@ -8,6 +8,7 @@ try
     simulation = true;
     ur5.move_joints(q_current, 3); % Allows quick resets
     pause(3);
+    fwdKinToolFrame = tf_frame('base_link','fwdKinToolFrame',eye(4));
 catch ME
     %    disp(ME);
     q_current =  [0 -pi/2 0 -pi/2 0 pi]';%zeros([6,1]);
@@ -36,25 +37,29 @@ thetas = ur5InvKin(gst2);
 q2 = pick_thetas(thetas, q2_above);
 
 q_list = [q1_above, q1, q1_above,q2_above, q2, q2_above];
-
+g_list = [gst1_above, gst1, gst1_above,gst2_above, gst2, gst2_above];
 if simulation
     time_interval=3; %
-    
-%     %test
-%     thetas = ur5InvKin(gst1);
-%     for i = 1:8
-%         ur5.move_joints(thetas(:,i), time_interval);
-%         pause(time_interval+1);
+%     for i = 1:6
+% %         fwdKinToolFrame.move_frame('base_link',g_list[:, ])
+% %         pause(0.5); % Prevent things from breaking
+%         ur5.move_joints(q, time_interval);
+%         pause(time_interval);
+%         disp(q);
 %     end
-%     
-%     %
     
-    
-    for q = q_list
-        ur5.move_joints(q, time_interval);
-        pause(time_interval);
-        disp(q);
-    end
+    fwdKinToolFrame.move_frame('base_link',gst1_above);pause(0.5); % Prevent things from breaking
+    ur5.move_joints(q1_above, time_interval);pause(time_interval);
+    fwdKinToolFrame.move_frame('base_link',gst1);pause(0.5); % Prevent things from breaking
+    ur5.move_joints(q1, time_interval);pause(time_interval);
+    fwdKinToolFrame.move_frame('base_link',gst1_above);pause(0.5); % Prevent things from breaking
+    ur5.move_joints(q1_above, time_interval);pause(time_interval);
+    fwdKinToolFrame.move_frame('base_link',gst2_above);pause(0.5); % Prevent things from breaking
+    ur5.move_joints(q2_above, time_interval);pause(time_interval);
+    fwdKinToolFrame.move_frame('base_link',gst2);pause(0.5); % Prevent things from breaking
+    ur5.move_joints(q2, time_interval);pause(time_interval);
+    fwdKinToolFrame.move_frame('base_link',gst2_above);pause(0.5); % Prevent things from breaking
+    ur5.move_joints(q2_above, time_interval);pause(time_interval);
 end
 
 %% Part 2 - RRcontrol
