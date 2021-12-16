@@ -10,9 +10,9 @@ function Jb = JacobianBody(q)
 theta1 = q(1); theta2 = q(2); theta3 = q(3); 
 theta4 = q(4); theta5 = q(5); theta6 = q(6); 
 
-% % original xacro home
-% theta1 = q(1)+pi; theta2 = q(2); theta3 = q(3); 
-% theta4 = q(4); theta5 = q(5); theta6 = q(6); 
+% original xacro home
+theta1 = q(1)+pi; theta2 = q(2); theta3 = q(3); 
+theta4 = q(4); theta5 = q(5); theta6 = q(6); 
 
 % %ryan keating home
 % theta1 = q(1)+pi/2; theta2 = q(2)-pi/2; theta3 = q(3); 
@@ -91,5 +91,44 @@ j5 = Adjoint(inv(g45*g34*g23*g12*g01))*twist5;
 j6 = Adjoint(inv(g56*g45*g34*g23*g12*g01))*twist6;
 
 Jb = [j1,j2,j3,j4,j5,j6];
+
+
+%%
+A1 = Trans(a1, alpha1, d1, theta1);
+A2 = Trans(a2, alpha2, d2, theta2);
+A3 = Trans(a3, alpha3, d3, theta3);
+A4 = Trans(a4, alpha4, d4, theta4);
+A5 = Trans(a5, alpha5, d5, theta5);
+A6 = Trans(a6, alpha6, d6, theta6);
+%Creating Transfer matrices
+T2= A1*A2;
+T3= A1*A2*A3;
+T4= A1*A2*A3*A4;
+T5= A1*A2*A3*A4*A5;
+T6= A1*A2*A3*A4*A5*A6;
+% Creating zi
+z0= [0;0;1];
+z1= A1(1:3,3);
+z2= T2(1:3,3);
+z3= T3(1:3,3);
+z4= T4(1:3,3);
+z5= T5(1:3,3);
+% Creating pi
+p0=[0;0;0];
+p1=A1(1:3,4);
+p2=T2(1:3,4);
+p3=T3(1:3,4);
+p4=T4(1:3,4);
+p5=T5(1:3,4);
+P=T6(1:3,4);
+
+% Jacobian matrix Computation
+Jb= ([cross(z0,P-p0)',cross(z1,P-p1)', 
+cross(z2,P-p2)',cross(z3,P-p3)',
+cross(z4,P-p4)',cross(z5,P-p5)'; 
+z0 , z1 , z2, z3 , z4 , z5]);
+
+
+
 
 end
