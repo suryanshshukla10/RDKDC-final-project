@@ -16,11 +16,10 @@ v=1000;omega=1000; % Just to start the while loop
 
 while norm(v) > v_threshold && norm(omega) > omega_threshold
     q = ur5.get_current_joints();
-    twist =  getXi(inv(gdesired) * ur5fwdtwist(q));
+%     twist =  getXi(inv(gdesired) * ur5fwdtwist(q));
+    twist =  getXi(inv(gdesired) * ur5FwdKin(q));
     omega = twist(4:6);
     v = twist(1:3);
-%     disp(norm(v)); disp(norm(omega))
-    
     q_next = q - k*T_Step*inv(JacobianBody(q)) * twist;
     
     % Singularity detection on next move
