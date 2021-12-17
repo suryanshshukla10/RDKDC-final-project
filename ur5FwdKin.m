@@ -3,10 +3,19 @@ function gst = ur5FwdKin(q)
 % Purpose - Compute forward kinematics map of UR5
 %Input - q - 6x1 joint space variable vector = [θ1; θ2; θ3; θ4; θ5; θ6]T
 %Output - gst: end effector pose, gst (4x4 matrix) 
+% 
+% % alernative orignal home
+% theta1 = q(1); theta2 = q(2)+pi/2; theta3 = q(3); 
+% theta4 = q(4)+pi/2; theta5 = q(5); theta6 = q(6); 
 
-% Parse input
-theta1 = q(1)+pi/2; theta2 = q(2)-pi/2; theta3 = q(3); 
-theta4 = q(4)-pi/2; theta5 = q(5); theta6 = q(6); 
+% % original xacro home
+theta1 = q(1)+pi; theta2 = q(2); theta3 = q(3);
+theta4 = q(4); theta5 = q(5); theta6 = q(6);
+
+% %ryan keating home
+% theta1 = q(1)+pi/2; theta2 = q(2)-pi/2; theta3 = q(3); 
+% theta4 = q(4)-pi/2; theta5 = q(5); theta6 = q(6); 
+
 
 % DH parameters
 d1 = 0.0892;

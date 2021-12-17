@@ -8,7 +8,21 @@
 % Use comments to isolate what pose to run
 % Joint Vector for Demo
 q = [pi/4 pi/3 pi/6 pi/5 pi/2 pi/3]'; % Pose 1
-% q = [pi/2 -pi/2 pi/4 0 pi/2 0]'; % Pose 2
+q = [pi/2 -pi/2 pi/4 0 pi/2 0]'; % Pose 2
+% q = [pi/2 0 pi/2 0 0 0]';
+
+
+gt6 = [0 0 1 0; -1 0 0 0; 0 -1 0 0; 0 0 0 1];
+g0b = [1 0 0 0; 0 1 0 0; 0 0 1 0; 0 0 0 1];
+
+
+g_start = [0 -1 0 0.47;
+               0  0 1 0.55;
+               -1 0 0 0.12;
+               0 0 0 1];
+    g_start_ = g0b*g_start*gt6;
+    s = ur5InvKin(g_start_);
+    q = s(:,6);
 
 
 % Connect RViz
@@ -16,9 +30,10 @@ if exist('ur5','var')==0
     ur5 = ur5_interface();
 end
 ur5.move_joints(zeros(6,1), 3); % Allows quick resets
-
+pause(3);
 % Compute transform
-g = ur5fwdtwist(q); % Working Fwd Kinematics
+% g = ur5fwdtwist(q); % Working Fwd Kinematics
+g=ur5FwdKin(q);
 
 % Test in RViz
 fwdKinToolFrame = tf_frame('base_link','fwdKinToolFrame',eye(4));
@@ -212,25 +227,30 @@ disp(g-check_transform); % Compare
 if exist('ur5','var')==0
     ur5 = ur5_interface();
 end
-qinitial = [pi/4 0 -pi/4 pi/2 pi/4 0]';
-ur5.move_joints(qinitial, 3); % Move away from singularities
-pause(3);
-qdesired = [pi/2 0 -pi/4 -pi/2 pi/4 0]';
-ur5.move_joints(qdesired, 3); % Move away from singularities
-pause(3);
-qinitial = [pi/4 0 -pi/4 pi/2 pi/4 0]';
-ur5.move_joints(qinitial, 3); % Move away from singularities
-pause(3);
-% Move 1
-qdesired = [pi/2 0 -pi/4 -pi/2 pi/4 0]';
-gdesired = ur5fwdtwist(qdesired);
-k=3;
-finalerr = ur5RRcontrol(gdesired, k, ur5);
-disp(finalerr);
 
-% Move 2 - Singularity theta3=0
-qdesired = [0 0 0 0 pi pi]'; 
-gdesired = ur5fwdtwist(qdesired);
+qdesired = [pi/2 0 -pi/4 pi/2 pi/4 0]';
+qinitial = [pi/4 0 -pi/4 pi/2 pi/4 0]';
+ur5.move_joints(qinitial, 3); % Move away from singularities
+pause(3);
+
+startFrame = tf_frame('base_link','start',eye(4));
+pause(1); % Prevent things from breaking
+startFrame.move_frame('base_link',ur5FwdKin(qinitial));
+pause(1);
+endFrame = tf_frame('base_link','end',eye(4));
+pause(1); % Prevent things from breaking
+endFrame.move_frame('base_link',ur5FwdKin(qdesired));
+
+gdesired = ur5FwdKin(qdesired);
 k=1;
-finalerr = ur5RRcontrol(gdesired, k, ur5);
-disp(finalerr);
+% finalerr = ur5RRcontrol(gdesired, k, ur5);
+% disp(finalerr);
+
+ur5RRcontrol(gdesired, k, ur5);
+
+% % Move 2 - Singularity theta3=0
+% qdesired = [0 0 0 0 pi pi]'; 
+% gdesired = ur5fwdtwist(qdesired);
+% k=1;
+% finalerr = ur5RRcontrol(gdesired, k, ur5);
+% disp(finalerr);

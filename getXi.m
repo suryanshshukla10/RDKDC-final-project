@@ -28,7 +28,6 @@ if R == eye(3) %condition for R=Identity matrix
         xi = [v,0,0,0];
     end
     
-
 else 
     trR = trace(R);
     theta = acos((trR - 1 )/2);
@@ -36,17 +35,13 @@ else
     omega = (1/(2*sin(theta)))*[R(3,2) - R(2,3);R(1,3)-R(3,1);R(2,1)-R(1,2)];
     omega_hat = skew(omega);
     
-%     % Manual Exponential Matrix Calculation
-%     R = eye(3)+omega_hat*sin(theta)+omega_hat^2*(1-cos(theta)); %Rodrigues 
-%     A = (eye(3) - R)*omega_hat + omega*transpose(omega)*theta;
-    % Let MATLAB do it
     A = (eye(3) - expm(omega_hat*theta))*omega_hat + omega*transpose(omega)*theta;
     
     A_inv = inv(A);
 
     v = A_inv * p;
 
-    xi = [v;omega];
+    xi = [v;omega]*theta;
 
 end 
 
